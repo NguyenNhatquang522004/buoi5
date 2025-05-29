@@ -1,0 +1,42 @@
+﻿@model buoi5.Models.User
+
+<h2>Xóa User</h2>
+
+<div class="alert alert-warning">
+    <h4>⚠️ Xác nhận xóa</h4>
+    <p>Bạn có chắc chắn muốn xóa user này không? Hành động này không thể hoàn tác!</p>
+</div>
+
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <h4>Thông tin User sẽ bị xóa</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">ID:</dt>
+            <dd class="col-sm-9">@Model.Id</dd>
+
+            <dt class="col-sm-3">Tên:</dt>
+            <dd class="col-sm-9">@Model.Name</dd>
+
+            <dt class="col-sm-3">Email:</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Lớp học:</dt>
+            <dd class="col-sm-9">@Model.className</dd>
+
+            <dt class="col-sm-3">Ngày tạo:</dt>
+            <dd class="col-sm-9">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <form asp-action="Delete" method="post" style="display: inline;">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa user này?')">
+                🗑️ Xóa User
+            </button>
+        </form>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info">Xem chi tiết</a>
+        <a asp-action="Index" class="btn btn-secondary">Hủy bỏ</a>
+    </div>
+</div>
