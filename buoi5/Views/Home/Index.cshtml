@@ -1,8 +1,99 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Trang chủ";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="jumbotron bg-primary text-white text-center p-5 rounded mb-4">
+        <h1 class="display-4"><i class="fas fa-graduation-cap"></i> Hệ thống đăng ký học phần</h1>
+        <p class="lead">Chào mừng bạn đến với hệ thống đăng ký học phần trực tuyến</p>
+        @if (Context.Session.GetString("MaSV") == null)
+        {
+            <a class="btn btn-light btn-lg" asp-controller="Account" asp-action="Login">
+                <i class="fas fa-sign-in-alt"></i> Đăng nhập để bắt đầu
+            </a>
+        }
+        else
+        {
+            <h3>Xin chào, <span class="text-warning">@Context.Session.GetString("HoTen")</span>!</h3>
+            <div class="mt-3">
+                <a class="btn btn-warning btn-lg me-2" asp-controller="HocPhan" asp-action="Index">
+                    <i class="fas fa-book"></i> Xem học phần
+                </a>
+                <a class="btn btn-success btn-lg" asp-controller="DangKy" asp-action="MyRegistrations">
+                    <i class="fas fa-list"></i> Học phần đã đăng ký
+                </a>
+            </div>
+        }
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-graduate fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Quản lý sinh viên</h5>
+                    <p class="card-text">Xem và quản lý thông tin sinh viên trong hệ thống</p>
+                    <a href="@Url.Action("Index", "SinhVien")" class="btn btn-primary">
+                        <i class="fas fa-users"></i> Xem danh sách
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-book fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Học phần</h5>
+                    <p class="card-text">Xem danh sách các học phần có thể đăng ký</p>
+                    @if (Context.Session.GetString("MaSV") != null)
+                    {
+                        <a href="@Url.Action("Index", "HocPhan")" class="btn btn-success">
+                            <i class="fas fa-eye"></i> Xem học phần
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Login", "Account")" class="btn btn-success">
+                            <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-clipboard-list fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Đăng ký</h5>
+                    <p class="card-text">Đăng ký các học phần bạn muốn học</p>
+                    @if (Context.Session.GetString("MaSV") != null)
+                    {
+                        <a href="@Url.Action("ViewCart", "DangKy")" class="btn btn-warning">
+                            <i class="fas fa-shopping-cart"></i> Giỏ đăng ký
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Login", "Account")" class="btn btn-warning">
+                            <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <h5><i class="fas fa-info-circle"></i> Hướng dẫn sử dụng:</h5>
+                <ol>
+                    <li>Đăng nhập bằng mã sinh viên (ví dụ: 0123456789 hoặc 9876543210)</li>
+                    <li>Xem danh sách học phần và thêm vào giỏ đăng ký</li>
+                    <li>Kiểm tra giỏ đăng ký và lưu thông tin</li>
+                    <li>Xem lại các học phần đã đăng ký</li>
+                </ol>
+            </div>
+        </div>
+    </div>
 </div>

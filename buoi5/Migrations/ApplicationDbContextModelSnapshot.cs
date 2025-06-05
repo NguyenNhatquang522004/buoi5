@@ -19,10 +19,216 @@ namespace buoi5.Migrations
                 .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("buoi5.Models.ChiTietDangKy", b =>
+                {
+                    b.Property<int>("MaDK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MaHP")
+                        .HasMaxLength(6)
+                        .HasColumnType("varchar(6)");
+
+                    b.HasKey("MaDK", "MaHP");
+
+                    b.HasIndex("MaHP");
+
+                    b.ToTable("ChiTietDangKys");
+                });
+
+            modelBuilder.Entity("buoi5.Models.DangKy", b =>
+                {
+                    b.Property<int>("MaDK")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("MaSV")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<DateTime?>("NgayDK")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("MaDK");
+
+                    b.HasIndex("MaSV");
+
+                    b.ToTable("DangKys");
+                });
+
+            modelBuilder.Entity("buoi5.Models.HocPhan", b =>
+                {
+                    b.Property<string>("MaHP")
+                        .HasMaxLength(6)
+                        .HasColumnType("varchar(6)");
+
+                    b.Property<int>("SoLuongDaDangKy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SoLuongToiDa")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SoTinChi")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TenHP")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.HasKey("MaHP");
+
+                    b.ToTable("HocPhans");
+
+                    b.HasData(
+                        new
+                        {
+                            MaHP = "CNTT01",
+                            SoLuongDaDangKy = 0,
+                            SoLuongToiDa = 40,
+                            SoTinChi = 3,
+                            TenHP = "Lập trình C"
+                        },
+                        new
+                        {
+                            MaHP = "CNTT02",
+                            SoLuongDaDangKy = 0,
+                            SoLuongToiDa = 35,
+                            SoTinChi = 2,
+                            TenHP = "Cơ sở dữ liệu"
+                        },
+                        new
+                        {
+                            MaHP = "QTKD01",
+                            SoLuongDaDangKy = 0,
+                            SoLuongToiDa = 30,
+                            SoTinChi = 2,
+                            TenHP = "Kinh tế vi mô"
+                        },
+                        new
+                        {
+                            MaHP = "QTKD02",
+                            SoLuongDaDangKy = 0,
+                            SoLuongToiDa = 25,
+                            SoTinChi = 3,
+                            TenHP = "Xác suất thống kê 1"
+                        });
+                });
+
+            modelBuilder.Entity("buoi5.Models.NganhHoc", b =>
+                {
+                    b.Property<string>("MaNganh")
+                        .HasMaxLength(4)
+                        .HasColumnType("varchar(4)");
+
+                    b.Property<string>("TenNganh")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.HasKey("MaNganh");
+
+                    b.ToTable("NganhHocs");
+
+                    b.HasData(
+                        new
+                        {
+                            MaNganh = "CNTT",
+                            TenNganh = "Công nghệ thông tin"
+                        },
+                        new
+                        {
+                            MaNganh = "QTKD",
+                            TenNganh = "Quản trị kinh doanh"
+                        });
+                });
+
+            modelBuilder.Entity("buoi5.Models.SinhVien", b =>
+                {
+                    b.Property<string>("MaSV")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("GioiTinh")
+                        .HasMaxLength(5)
+                        .HasColumnType("varchar(5)");
+
+                    b.Property<string>("Hinh")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("HoTen")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("MaNganh")
+                        .HasMaxLength(4)
+                        .HasColumnType("varchar(4)");
+
+                    b.Property<DateTime?>("NgaySinh")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("MaSV");
+
+                    b.HasIndex("MaNganh");
+
+                    b.ToTable("SinhViens");
+
+                    b.HasData(
+                        new
+                        {
+                            MaSV = "SV001",
+                            GioiTinh = "Nam",
+                            Hinh = "/Content/images/sv1.svg",
+                            HoTen = "Nguyễn Văn A",
+                            MaNganh = "CNTT",
+                            NgaySinh = new DateTime(2000, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MaSV = "SV002",
+                            GioiTinh = "Nữ",
+                            Hinh = "/Content/images/sv2.svg",
+                            HoTen = "Trần Thị B",
+                            MaNganh = "QTKD",
+                            NgaySinh = new DateTime(2000, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MaSV = "SV003",
+                            GioiTinh = "Nam",
+                            Hinh = "/Content/images/sv1.svg",
+                            HoTen = "Lê Văn C",
+                            MaNganh = "CNTT",
+                            NgaySinh = new DateTime(1999, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MaSV = "0123456789",
+                            GioiTinh = "Nam",
+                            Hinh = "/Content/images/sv1.svg",
+                            HoTen = "Nguyễn Văn A (Cũ)",
+                            MaNganh = "CNTT",
+                            NgaySinh = new DateTime(2000, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MaSV = "9876543210",
+                            GioiTinh = "Nữ",
+                            Hinh = "/Content/images/sv2.svg",
+                            HoTen = "Nguyễn Thị B (Cũ)",
+                            MaNganh = "QTKD",
+                            NgaySinh = new DateTime(2000, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
             modelBuilder.Entity("buoi5.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Age")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -42,11 +248,71 @@ namespace buoi5.Migrations
 
                     b.Property<string>("className")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("buoi5.Models.ChiTietDangKy", b =>
+                {
+                    b.HasOne("buoi5.Models.DangKy", "DangKy")
+                        .WithMany("ChiTietDangKys")
+                        .HasForeignKey("MaDK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("buoi5.Models.HocPhan", "HocPhan")
+                        .WithMany("ChiTietDangKys")
+                        .HasForeignKey("MaHP")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DangKy");
+
+                    b.Navigation("HocPhan");
+                });
+
+            modelBuilder.Entity("buoi5.Models.DangKy", b =>
+                {
+                    b.HasOne("buoi5.Models.SinhVien", "SinhVien")
+                        .WithMany("DangKys")
+                        .HasForeignKey("MaSV")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("SinhVien");
+                });
+
+            modelBuilder.Entity("buoi5.Models.SinhVien", b =>
+                {
+                    b.HasOne("buoi5.Models.NganhHoc", "NganhHoc")
+                        .WithMany("SinhViens")
+                        .HasForeignKey("MaNganh")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("NganhHoc");
+                });
+
+            modelBuilder.Entity("buoi5.Models.DangKy", b =>
+                {
+                    b.Navigation("ChiTietDangKys");
+                });
+
+            modelBuilder.Entity("buoi5.Models.HocPhan", b =>
+                {
+                    b.Navigation("ChiTietDangKys");
+                });
+
+            modelBuilder.Entity("buoi5.Models.NganhHoc", b =>
+                {
+                    b.Navigation("SinhViens");
+                });
+
+            modelBuilder.Entity("buoi5.Models.SinhVien", b =>
+                {
+                    b.Navigation("DangKys");
                 });
 #pragma warning restore 612, 618
         }

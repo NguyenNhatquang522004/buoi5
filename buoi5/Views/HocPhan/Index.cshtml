@@ -1,0 +1,130 @@
+@model IEnumerable<buoi5.Models.HocPhan>
+
+@{
+    ViewData["Title"] = "Danh sách học phần";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h3><i class="fas fa-book"></i> Danh sách học phần</h3>
+                    <p class="mb-0">Chào <strong>@Context.Session.GetString("HoTen")</strong>! 
+                       Chọn các học phần bạn muốn đăng ký.</p>
+                </div>
+                <div class="card-body">
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <div class="row">                        @foreach (var item in Model)
+                        {
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-primary @(item.SoLuongConLai <= 0 ? "border-danger" : "")">
+                                    <div class="card-header @(item.SoLuongConLai <= 0 ? "bg-danger text-white" : "bg-light")">
+                                        <h5 class="card-title @(item.SoLuongConLai <= 0 ? "text-white" : "text-primary") mb-0">
+                                            <i class="fas fa-graduation-cap"></i> @item.TenHP
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                            <strong><i class="fas fa-code"></i> Mã HP:</strong> 
+                                            <span class="badge bg-secondary">@item.MaHP</span><br>
+                                            <strong><i class="fas fa-star"></i> Số tín chỉ:</strong> 
+                                            <span class="badge bg-success">@item.SoTinChi tín chỉ</span><br>
+                                            <strong><i class="fas fa-users"></i> Số lượng:</strong><br>
+                                            <small>
+                                                <span class="badge bg-info">Tối đa: @item.SoLuongToiDa</span><br>
+                                                <span class="badge bg-warning">Đã đăng ký: @item.SoLuongDaDangKy</span><br>
+                                                <span class="badge @(item.SoLuongConLai > 0 ? "bg-success" : "bg-danger")">
+                                                    Còn lại: @item.SoLuongConLai
+                                                </span>
+                                            </small>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer bg-transparent">
+                                        @if (item.SoLuongConLai > 0)
+                                        {
+                                            <button class="btn btn-primary btn-sm w-100" 
+                                                    onclick="addToCart('@item.MaHP')">
+                                                <i class="fas fa-plus"></i> Thêm vào giỏ đăng ký
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-danger btn-sm w-100" disabled>
+                                                <i class="fas fa-times"></i> Đã hết chỗ
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    @if (!Model.Any())
+                    {
+                        <div class="text-center">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i> Hiện tại chưa có học phần nào để đăng ký.
+                            </div>
+                        </div>
+                    }
+
+                    <div class="text-center mt-4">
+                        <a href="@Url.Action("ViewCart", "DangKy")" class="btn btn-success btn-lg me-2">
+                            <i class="fas fa-shopping-cart"></i> Xem giỏ đăng ký
+                        </a>
+                        <a href="@Url.Action("MyRegistrations", "DangKy")" class="btn btn-info btn-lg me-2">
+                            <i class="fas fa-list"></i> Học phần đã đăng ký
+                        </a>
+                        <a href="@Url.Action("Logout", "Account")" class="btn btn-secondary btn-lg">
+                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>    <script>
+        function addToCart(maHP) {
+            console.log('Đang thêm học phần:', maHP);
+            
+            $.post('@Url.Action("AddToCart", "HocPhan")', { maHP: maHP }, function(result) {
+                console.log('Kết quả:', result);
+                if (result.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: result.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: result.message
+                    });
+                }
+            }).fail(function(xhr, status, error) {
+                console.error('Lỗi AJAX:', error);
+                console.error('Status:', status);
+                console.error('Response:', xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi kết nối!',
+                    text: 'Không thể kết nối đến server. Vui lòng thử lại!'
+                });
+            });
+        }
+    </script>
+}

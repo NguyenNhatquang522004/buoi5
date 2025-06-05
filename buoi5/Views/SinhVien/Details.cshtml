@@ -1,0 +1,132 @@
+﻿<!-- Views/SinhVien/Details.cshtml - Fixed null safety -->
+@model buoi5.Models.SinhVien
+
+@{
+    ViewData["Title"] = "Chi tiết sinh viên";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4 class="card-title mb-0">
+                        <i class="fas fa-user"></i> Chi tiết sinh viên
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">                        <div class="col-md-4 text-center">
+                            @if (!string.IsNullOrEmpty(Model.Hinh))
+                            {
+                                <img src="@Url.Content("~" + Model.Hinh)" alt="@Model.HoTen" class="img-fluid rounded-circle"
+                                     style="width: 200px; height: 200px; object-fit: cover;"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mx-auto"
+                                     style="width: 200px; height: 200px; display: none;">
+                                    <i class="fas fa-user fa-5x text-white"></i>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mx-auto"
+                                     style="width: 200px; height: 200px;">
+                                    <i class="fas fa-user fa-5x text-white"></i>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-8">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row" style="width: 30%;">Mã sinh viên:</th>
+                                        <td><strong class="text-primary">@Html.DisplayFor(model => model.MaSV)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Họ và tên:</th>
+                                        <td><strong>@Html.DisplayFor(model => model.HoTen)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Giới tính:</th>
+                                        <td>
+                                            @if (Model.GioiTinh == "Nam")
+                                            {
+                                                <span class="badge bg-primary">Nam</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger">Nữ</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Ngày sinh:</th>
+                                        <td>@Html.DisplayFor(model => model.NgaySinh)</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Ngành học:</th>
+                                        <td><span class="badge bg-info">@(Model.NganhHoc?.TenNganh ?? "Chưa có ngành")</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Registration History Section -->
+                    @if (Model.DangKys != null && Model.DangKys.Any())
+                    {
+                        <hr>
+                        <h5><i class="fas fa-history"></i> Lịch sử đăng ký học phần</h5>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Mã đăng ký</th>
+                                        <th>Ngày đăng ký</th>
+                                        <th>Học phần</th>
+                                        <th>Số tín chỉ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var dangKy in Model.DangKys)
+                                    {
+                                        @if (dangKy.ChiTietDangKys != null)
+                                        {
+                                            @foreach (var chiTiet in dangKy.ChiTietDangKys)
+                                            {
+                                                <tr>
+                                                    <td>@dangKy.MaDK</td>
+                                                    <td>@dangKy.NgayDK?.ToString("dd/MM/yyyy")</td>
+                                                    <td>@(chiTiet.HocPhan?.TenHP ?? "N/A")</td>
+                                                    <td><span class="badge bg-success">@(chiTiet.HocPhan?.SoTinChi ?? 0) tín chỉ</span></td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <hr>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> Sinh viên chưa đăng ký học phần nào.
+                        </div>
+                    }
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="@Url.Action("Index")" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-arrow-left"></i> Quay lại
+                        </a>
+                        <a href="@Url.Action("Edit", new { id = Model.MaSV })" class="btn btn-warning me-md-2">
+                            <i class="fas fa-edit"></i> Chỉnh sửa
+                        </a>
+                        <a href="@Url.Action("Delete", new { id = Model.MaSV })" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Xóa
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
